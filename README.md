@@ -1,6 +1,6 @@
 # :white_check_mark:基于Qt框架的天气预报应用开发
 
-**---->>:heavy_check_mark:添加简易音乐播放器模块**:wave:										:+1::point_up_2::star:
+**---->>:heavy_check_mark:添加简易音乐播放器模块**:wave:		-------				:+1::point_up_2::star:
 
 ## :green_book:1.项目简介
 
@@ -39,7 +39,9 @@ https://geoapi.qweather.com/v2/city/lookup?location=beij&key=YOUR_KEY
 https://devapi.qweather.com/v7/weather/now?location=101010100&key=YOUR_KEY
 
 **和风天气每日天气API**
+
 3日：https://devapi.qweather.com/v7/weather/3d?location=101010100&key=YOUR_KEY
+
 7日：https://devapi.qweather.com/v7/weather/7d?location=101010100&key=YOUR_KEY
 
 ## :shamrock:2.项目演示
@@ -70,7 +72,7 @@ https://devapi.qweather.com/v7/weather/now?location=101010100&key=YOUR_KEY
 
 2. 可添加\*.mp3、\*.wav 、\*.wma三种音频格式
 
-> ​	有能力的可以继续修改添加QVideoWidget模块播放视频
+	> 有能力的可以继续修改添加QVideoWidget模块播放视频
 
 3. 进度条时间显示的计算我将其放在子线程中实现
 
@@ -82,9 +84,9 @@ https://devapi.qweather.com/v7/weather/now?location=101010100&key=YOUR_KEY
 
 2. MyWeather：项目代码
 
-​		①Image：资源文件
+	​①Image：资源文件
 
-​		②Icons：天气图标，根据和风天气API调用返回json数据中图标代码来调用
+	​②Icons：天气图标，根据和风天气API调用返回json数据中图标代码来调用
 
 3. Output：可执行程序.exe文件，程序已经打包好，可直接下载安装使用
 
@@ -1555,7 +1557,7 @@ void MyThread::handlePlayDuration(const int &musicTime){
 
 通过MyMusicPlayer类发来的信号转到子线程处理。子线程处理好后通过信号发送回主线程调用槽函数显示当前时间。
 
-:carrot:**注意：**必须通过connect信号槽函数连接，如果直接调用函数，那么处理仍然是在主线程。
+:carrot: **注意：**必须通过connect信号槽函数连接，如果直接调用函数，那么处理仍然是在主线程。
 
 ```c++
 	connect(myMediaPlayer, &MyMusicPlayer::playPosition, myT, &MyThread::handlePlayPosition);
@@ -1582,7 +1584,7 @@ void MyThread::handlePlayDuration(const int &musicTime){
 
 
 
-#  :tent:总结
+##  :tent:总结
 
 ​		通过对天气预报、音乐播放器的内容，让我学到了很多，有些第一遍不清楚的第二遍强化了许多。并且，在做第一次天气预报的时候，我在纠结今日天气和多日天气的json数据应该什么时候接收，因为今日天气和多日天气都是在得到了城市id后就进行请求，我最先是将其放在函数里定义局部变量id，但是这样的话请求今日天气和多日天气就必须在一个函数内完成，我先是设计了一个lambda表达式，接收到QNetworkReply::finished信号后就执行Reply->readAll()来存储数据，但是connect()函数不会阻塞代码的执行，它只是设置了一个连接，当事件发生时执行相应的槽函数。所以在进行读取多日天气的同时会读取今日天气，如果第一个请求缓慢第二个请求立马发起，这样可能会导致lambda里面的程序还未执行完就已经在执行后续程序代码，例如这其中就会导致出现两个网络请求返回数据而出错。并且我在运行后会出现接收到今日天气但多日天气并未接收成功，需要多查询请求几次才行，我就又想到设计一个事件阻塞，等待多日天气数据请求获取成功后再执行今日天气的请求，这样就导致了运行结果的减慢。在我第二次做天气预报的时候，我选择直接将局部变量设置为weather类的成员，这样就可以在类内任意使用。那么我就可以在任意地方读取id，在收到多日天气JSON数据后用connect转到去接收今日天气的数据，这样使用connect()函数通过信号和槽函数的连接反而提高了程序的运行速度并且不出错。
 
@@ -1601,7 +1603,6 @@ void MyThread::handlePlayDuration(const int &musicTime){
 5.在计算滑块相对于播放音乐时的位置时，还需要同步计算当前的音乐播放时间"时分秒",并且还要计算总时间，假设是4分钟，4\*60\*1000=240000,如果在主线程中上述同步时不停的计算，并且还要不停更新UI，会不会因为耗费资源量太大或者计算太耗时影响程序的运行、导致程序界面无响应。计算量过大时，主线程无法及时响应用户的输入、处理其他事件、UI界面更新请求，从而导致程序失去响应。所以在程序中将计算任务添加到单独的线程中进行。
 
 > 将耗时的计算任务放在单独的线程中可以提高应用程序的响应性和用户体验，但需要遵循正确的线程管理和同步机制，以确保线程安全和数据一致性。
-
 
 
 
@@ -1638,8 +1639,4 @@ void MyThread::handlePlayDuration(const int &musicTime){
 
 
 
-
-
-
 :beginner: :star:
-

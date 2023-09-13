@@ -1355,7 +1355,7 @@ void WeatherWidget::on_lwMusicList_itemDoubleClicked(QListWidgetItem *item) {
 }
 ```
 
-单击
+单击 选中，但需要点击播放按钮才播放。
 
 ```c++
 void WeatherWidget::on_lwMusicList_itemClicked(QListWidgetItem *item)
